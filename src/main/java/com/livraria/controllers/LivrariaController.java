@@ -1,7 +1,7 @@
 package com.livraria.controllers;
 
-import com.livraria.models.Livro;
 import com.livraria.services.LivroService;
+import entity.Livro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

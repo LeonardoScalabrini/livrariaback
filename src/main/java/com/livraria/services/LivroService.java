@@ -1,7 +1,7 @@
 package com.livraria.services;
 
-import com.livraria.models.Livro;
 import com.livraria.repositorys.LivroRepository;
+import entity.Livro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

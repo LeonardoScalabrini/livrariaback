@@ -1,8 +1,8 @@
 package com.livraria.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.livraria.models.Livro;
 import com.livraria.services.LivroService;
+import entity.Livro;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

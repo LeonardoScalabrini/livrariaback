@@ -1,6 +1,6 @@
 package com.livraria.repositorys;
 
-import com.livraria.models.Livro;
+import entity.Livro;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

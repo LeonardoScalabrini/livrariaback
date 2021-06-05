@@ -1,0 +1,29 @@
+plugins {
+    id 'org.springframework.boot' version '2.5.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'org.livrariaback-application'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'com.github.leonardoscalabrini:livrariaback-adapter:v1.01'
+    implementation 'com.github.LeonardoScalabrini:livrariaback-usecase:v1.12'
+    implementation 'com.github.LeonardoScalabrini:livrariaback-domain:v1.04'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.2.0.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.2.0.RELEASE'
+    testImplementation group: 'de.flapdoodle.embed', name: 'de.flapdoodle.embed.mongo', version: '3.0.0'
+}
+
+test {
+    useJUnitPlatform()
+}

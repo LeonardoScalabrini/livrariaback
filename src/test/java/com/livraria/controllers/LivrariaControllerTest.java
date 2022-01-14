@@ -1,11 +1,8 @@
-package livrariaback.controllers;
+package com.livraria.controllers;
 
-import adapter.LivrariaAdapter;
-import adapter.dto.CriarLivroRequest;
-import adapter.dto.EditarLivroRequest;
-import adapter.dto.LivroResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import livrariaback.utils.Utils;
+import com.livraria.models.Livro;
+import com.livraria.services.LivroService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LivrariaControllerTest {
 
     @MockBean
-    private LivrariaAdapter livrariaAdapter;
+    private LivroService livroService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,38 +36,49 @@ public class LivrariaControllerTest {
 
     @Before
     public void init() {
-        LivroResponse livroResponse = Utils.livroResponse("id", "titulo", "autor");
-        Mockito.when(livrariaAdapter.criarLivro(Mockito.any())).thenReturn(livroResponse);
-        Mockito.when(livrariaAdapter.buscarLivro(Mockito.any())).thenReturn(Collections.singletonList(livroResponse));
+        Livro livroDB = new Livro();
+        livroDB.setId("id");
+        livroDB.setTitulo("titulo");
+        livroDB.setAutor("autor");
+        Mockito.when(livroService.criar(Mockito.any())).thenReturn(livroDB);
+        Mockito.when(livroService.buscar(Mockito.any())).thenReturn(Collections.singletonList(livroDB));
     }
 
     @Test
     public void deveCriar() throws Exception {
-        CriarLivroRequest criarLivroRequest = Utils.criarLivroRequest("Titulo", "Autor");
+
+        Livro livro = new Livro();
+        livro.setTitulo("Titulo");
+        livro.setAutor("Autor");
 
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/livraria")
-                .content(mapper.writeValueAsString(criarLivroRequest))
+                .content(mapper.writeValueAsString(livro))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.titulo").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.autor").exists());
 
-        verify(livrariaAdapter, times(1)).criarLivro(any());
+        verify(livroService, times(1)).criar(any());
     }
 
     @Test
     public void deveEditar() throws Exception {
-        EditarLivroRequest editarLivroRequest = Utils.editarLivroRequest("id", "Titulo", "Autor");
+
+        Livro livro = new Livro();
+        livro.setId("id");
+        livro.setTitulo("Titulo");
+        livro.setAutor("Autor");
+
         mockMvc.perform(MockMvcRequestBuilders
                 .put("/livraria")
-                .content(mapper.writeValueAsString(editarLivroRequest))
+                .content(mapper.writeValueAsString(livro))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$").doesNotExist());
 
-        verify(livrariaAdapter, times(1)).editarLivro(any());
+        verify(livroService, times(1)).editar(any());
     }
 
     @Test
@@ -81,7 +89,7 @@ public class LivrariaControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$").doesNotExist());
 
-        verify(livrariaAdapter, times(1)).excluirLivro("id");
+        verify(livroService, times(1)).excluir("id");
     }
 
     @Test
@@ -94,6 +102,6 @@ public class LivrariaControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].titulo").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].autor").exists());
 
-        verify(livrariaAdapter, times(1)).buscarLivro("filtro");
+        verify(livroService, times(1)).buscar("filtro");
     }
 }
